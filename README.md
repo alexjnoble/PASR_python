@@ -63,9 +63,9 @@ This command will do the following:
 
 This is just an example. Adjust the command to suit your needs!
 
-## Associated Manuscript
+## Reference
 
-For more details about the PASR algorithm and its applications, see the associated manuscript by Burton-Smith & Murata: [https://doi.org/10.1101/2023.06.09.544325](https://doi.org/10.1101/2023.06.09.544325)
+For more details about the PASR algorithm and its applications, see the associated manuscript by Burton-Smith & Murata, 2023: [https://doi.org/10.1101/2023.06.09.544325](https://doi.org/10.1101/2023.06.09.544325)
 
 ## Author
 
