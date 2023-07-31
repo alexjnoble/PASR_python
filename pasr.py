@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #
-# Author: Alex J. Noble with help from GPT4, June 2023
+# Author: Alex J. Noble with help from GPT4, June-July 2023
 # Associated manuscript: https://doi.org/10.1101/2023.06.09.544325
 #
 # This script applies the PASR algorithm to 2D images or image stacks.
@@ -83,8 +83,8 @@ def process_file(input_file, output_file, scale, compression, flip_tif):
             return
         processed_data = processed_data.astype(np.uint8)
         im = Image.fromarray(processed_data)
-        im.save(output_file)
-        print(colored(f'PASR pre-processed data written to {output_file}\n', 'green'))
+        im.save(output_file, quality=args.jpg_quality)
+        print(colored(f'PASR pre-processed data written to {output_file} with quality {args.jpg_quality}\n', 'green'))
     else:
         raise ValueError(colored('Unsupported output file format. Only MRC, TIF, and JPG for 2D images are supported.', 'red'))
 
@@ -109,6 +109,16 @@ def process_directory(input_dir, output_dir, scale, compression, flip_tif, force
     """
     # Listing all files in the directory
     file_list = glob.glob(os.path.join(input_dir, "*"))
+    # Get the number of files and the minimum of cores and number of files
+    num_files = len(file_list)
+    min_cores = min(n_cores, num_files)
+    
+    # Get a set of unique file types in the directory
+    file_types = set(os.path.splitext(file)[1][1:] for file in file_list)
+    output_types = ', '.join(file_type.upper() for file_type in file_types)
+    
+    print(colored(f'PASR-processing {num_files} {output_types} files across {min_cores} CPU cores...', 'green'))
+
     # Creating the output directory if it doesn't exist
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
@@ -139,8 +149,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="PASR Pre-process MRC and TIF frame stacks and MRC, TIF, and JPG images.")
     parser.add_argument("input", type=str, help="Input MRC, MRCS, TIF, TIFF, or JPG file, or directory containing such files.")
     parser.add_argument("-s", "--scale", type=int, choices=range(2, 5), default=2, help="Scaling factor (number of times to duplicate each pixel)")
-    parser.add_argument("-o", "--output", type=str, help="Output MRC, TIF, or TIFF file, or directory to store processed files.")
+    parser.add_argument("-o", "--output", type=str, help="Output MRC, TIF, or TIFF file, or directory to store processed files. If not provided and the input is a directory, the input directory is used.")
     parser.add_argument("-c", "--compression", type=str, choices=['zlib', 'lzw'], default='lzw', help="Compression algorithm for TIF output.")
+    parser.add_argument("-q", "--jpg_quality", type=int, default=95, help="Quality for JPG output, from 1 (worst) to 100 (best). Note: values above 95 may not increase quality much, but will increase file size substantially. Default is 95.")
     parser.add_argument("-n", "--n_cores", type=int, default=os.cpu_count(), help="Number of CPU cores to use for parallel processing.")
     parser.add_argument("-k", "--keep_basename", action="store_true", help="Keep the original basename for the output file(s); do not append _PASR_{scale}x.")
     parser.add_argument("--flip_tif", default=None, action='store_true', help="Option to flip TIF output across the x-axis. Default is True for MRC/MRCS input and TIF/TIFF output, False otherwise, unless specified.")
@@ -151,13 +162,16 @@ if __name__ == "__main__":
 
     # Checking if the input is a directory
     if os.path.isdir(args.input):
-        # If the output path is not specified or it's a file, raise an error
-        if args.output is None or not os.path.isdir(args.output):
-            raise ValueError(colored('If input is a directory, output must also be a directory.', 'red'))
+        # If the output path is not specified, set it to the input directory
+        if args.output is None:
+            args.output = args.input
+        # If the output directory does not exist, create it
+        elif not os.path.isdir(args.output):
+            os.makedirs(args.output)
 
         # Adding user confirmation for potential file overwriting
         if os.path.normpath(args.input) == os.path.normpath(args.output):
-            confirm = input(colored('Warning: Your input and output directories are the same. This will overwrite your files. Continue? [y/N]', 'yellow'))
+            confirm = input(colored('Warning: Your input and output directories are the same. This may overwrite files. Continue? [y/N]', 'yellow'))
             if confirm.lower() != 'y':
                 exit()
 
