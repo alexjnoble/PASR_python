@@ -150,14 +150,14 @@ if __name__ == "__main__":
     parser.add_argument("input", type=str, help="Input MRC, MRCS, TIF, TIFF, or JPG file, or directory containing such files.")
     parser.add_argument("-s", "--scale", type=int, choices=range(2, 5), default=2, help="Scaling factor (number of times to duplicate each pixel)")
     parser.add_argument("-o", "--output", type=str, help="Output MRC, TIF, or TIFF file, or directory to store processed files. If not provided and the input is a directory, the input directory is used.")
-    parser.add_argument("-c", "--compression", type=str, choices=['zlib', 'lzw'], default='lzw', help="Compression algorithm for TIF output.")
+    parser.add_argument("-c", "--compression", type=str, choices=['zlib', 'lzw'], default='lzw', help="Compression algorithm for TIF output. ZLIB is smaller, but may not work with some software.")
     parser.add_argument("-q", "--jpg_quality", type=int, default=95, help="Quality for JPG output, from 1 (worst) to 100 (best). Note: values above 95 may not increase quality much, but will increase file size substantially. Default is 95.")
     parser.add_argument("-n", "--n_cores", type=int, default=os.cpu_count(), help="Number of CPU cores to use for parallel processing.")
     parser.add_argument("-k", "--keep_basename", action="store_true", help="Keep the original basename for the output file(s); do not append _PASR_{scale}x.")
     parser.add_argument("--flip_tif", default=None, action='store_true', help="Option to flip TIF output across the x-axis. Default is True for MRC/MRCS input and TIF/TIFF output, False otherwise, unless specified.")
-    parser.add_argument("--force_tif", action="store_true", help="Force the output file extension to be .tif. This is useful because .tif output uses ZLIB or LZW compression.")
-    parser.add_argument("--force_mrc", action="store_true", help="Force the output file extension to be .mrc. This exists just for completion.")
-    parser.add_argument("--force_jpg", action="store_true", help="Force the output file extension to be .jpg for 2D images. This exists just for fun.")
+    parser.add_argument("-t", "--tif", "--force_tif", action="store_true", help="Force the output file extension to be .tif. This is useful because .tif output uses ZLIB or LZW compression.")
+    parser.add_argument("-m", "--mrc", "--force_mrc", action="store_true", help="Force the output file extension to be .mrc. This exists just for completion.")
+    parser.add_argument("-j", "--jpg", "--force_jpg", action="store_true", help="Force the output file extension to be .jpg for 2D images. This exists just for fun.")
     args = parser.parse_args()
 
     # Checking if the input is a directory
@@ -175,7 +175,7 @@ if __name__ == "__main__":
             if confirm.lower() != 'y':
                 exit()
 
-        process_directory(args.input, args.output, args.scale, args.compression, args.flip_tif, args.force_tif, args.force_mrc, args.force_jpg, args.n_cores, args.keep_basename)
+        process_directory(args.input, args.output, args.scale, args.compression, args.flip_tif, args.tif, args.mrc, args.jpg, args.n_cores, args.keep_basename)
     else:
         # If the output file is not specified, we create one with the same name as the input, but append "_PASR" before the extension
         if args.output is None:
@@ -186,13 +186,13 @@ if __name__ == "__main__":
                 args.output = f"{base_name}_PASR_{args.scale}x{ext}"
 
         # Overwriting file extension if necessary
-        if args.force_tif:
+        if args.tif:
             base_name, ext = os.path.splitext(args.output)
             args.output = f"{base_name}.tif"
-        if args.force_mrc:
+        if args.mrc:
             base_name, ext = os.path.splitext(args.output)
             args.output = f"{base_name}.mrc"
-        if args.force_jpg:
+        if args.jpg:
             base_name, ext = os.path.splitext(args.output)
             args.output = f"{base_name}.jpg"
 
