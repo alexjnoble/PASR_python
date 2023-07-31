@@ -1,5 +1,55 @@
-# PASR_python
+# PASR Pre-Processing Script
 
-This script applies the PASR algorithm to 2D images or image stacks.
+## Introduction
 
-Reference: https://doi.org/10.1101/2023.06.09.544325
+This script applies the PASR (Post-Acquisition Super Resolution) algorithm to 2D images or image stacks. The script is designed to handle files in MRC, TIF, TIFF, and JPG formats, and can process individual files or a directory of files. The PASR algorithm is a type of image pre-processing that scales images by duplicating each pixel a specified number of times. The result is that cryoEM/cryoET particle alignments that reach Nyquist resolution before PASR mayreach a beyond-Nyquist resolution after PASR. This is possible due to super-sampling and sub-pixel cross-correlation accuracy during frame alignment and/or particle alignment steps.
+
+## Installation
+
+This script requires Python 3 and several Python libraries. These libraries can be installed via pip:
+
+```bash
+pip install mrcfile tifffile imagecodecs termcolor pillow
+```
+
+## Usage
+
+The script can be run from the command line and takes a number of arguments.
+
+To process a single file:
+```bash
+./pasr.py input.mrc
+```
+
+To process a directory of files:
+```bash
+./pasr.py images/ -o pasred/ --force_tif
+```
+
+## Arguments
+
+- `input`: The path to the input file or directory.
+- `-s`, `--scale`: The scale factor (i.e., the number of times to duplicate each pixel). Default is 2.
+- `-o`, `--output`: The path to the output file or directory. If not provided and the input is a directory, the input directory is used.
+- `-c`, `--compression`: The compression algorithm to use for TIF output. Choices are 'zlib' and 'lzw'. Default is 'lzw'.
+- `-q`, `--jpg_quality`: The quality for JPG output, from 1 (worst) to 100 (best). Note: values above 95 may not increase quality much, but will increase file size substantially. Default is 95.
+- `-n`, `--n_cores`: The number of CPU cores to use for parallel processing. Default is the number of cores available on the system.
+- `-k`, `--keep_basename`: Keep the original basename for the output file(s); do not append `_PASR_{scale}x`.
+- `--flip_tif`: Flip TIF output across the x-axis. Default is True for MRC/MRCS input and TIF/TIFF output, False otherwise, unless specified.
+- `--force_tif`: Force the output file extension to be .tif. This is useful because .tif output uses ZLIB or LZW compression.
+- `--force_mrc`: Force the output file extension to be .mrc.
+- `--force_jpg`: Force the output file extension to be .jpg for 2D images.
+
+## Details
+
+The script is parallelized for efficiency when processing multiple files using as many CPU cores as are available on the system, unless specified otherwise.
+
+Recommended output formats are TIF (best lossless compression) or MRC. JPEG output is also an option for fun development and archival purposes.
+
+## Associated Manuscript
+
+For more details about the PASR algorithm and its applications, see the associated manuscript: [https://doi.org/10.1101/2023.06.09.544325](https://doi.org/10.1101/2023.06.09.544325)
+
+## Author
+
+This script was written by Alex J. Noble with assistance from OpenAI's GPT-4 model, June-July 2023.
