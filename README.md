@@ -46,9 +46,28 @@ The script is parallelized for efficiency when processing multiple files using a
 
 Recommended output formats are TIF (best lossless compression) or MRC. JPEG output is also an option for fun development and archival purposes.
 
+## Example with Options
+
+Here is an example command using several of the available options:
+
+```bash
+./pasr.py images/ -o pasred/ -s 3 -c zlib -n 4 --force_tif
+```
+
+This command will do the following:
+
+- `images/`: Process all files in the `images/` directory.
+- `-o pasred/`: Write the processed files to the `pasred/` directory.
+- `-s 3`: Use a scale factor of 3, meaning each pixel in the original images will be replaced with a 3x3 grid of pixels in the processed images. Note: Only do this if you have already reached Nyquist for -s 2.
+- `-c zlib`: Use zlib compression for TIF output.
+- `-n 4`: Use 4 CPU cores for parallel processing.
+- `--force_tif`: Save all output files as .tif, regardless of the input file format.
+
+This is just an example. Adjust the command to suit your needs!
+
 ## Associated Manuscript
 
-For more details about the PASR algorithm and its applications, see the associated manuscript: [https://doi.org/10.1101/2023.06.09.544325](https://doi.org/10.1101/2023.06.09.544325)
+For more details about the PASR algorithm and its applications, see the associated manuscript by Burton-Smith & Murata: [https://doi.org/10.1101/2023.06.09.544325](https://doi.org/10.1101/2023.06.09.544325)
 
 ## Author
 
