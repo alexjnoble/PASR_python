@@ -107,7 +107,7 @@ def process_file(input_file, output_file, scale, compression, flip_tif):
         raise ValueError(colored('Unsupported output file format. Only MRC, TIF, and JPG for 2D images are supported.', 'red'))
 
 # Function to process a directory
-def process_directory(input_dir, output_dir, scale, compression, flip_tif, force_tif, force_mrc, force_jpg, n_cores, keep_basename):
+def process_files(file_list, output_dir, scale, compression, flip_tif, force_tif, force_mrc, force_jpg, n_cores, keep_basename):
     """Processes a directory: lists all files and processes each of them.
 
     Args:
@@ -125,8 +125,6 @@ def process_directory(input_dir, output_dir, scale, compression, flip_tif, force
     Returns:
     None
     """
-    # Listing all files in the directory
-    file_list = glob.glob(os.path.join(input_dir, "*"))
     # Get the number of files and the minimum of cores and number of files
     num_files = len(file_list)
     min_cores = min(n_cores, num_files)
@@ -179,55 +177,74 @@ if __name__ == "__main__":
     parser.add_argument("-y", "--yes", action="store_true", help="Automatically answer 'y' to any user input questions.")
     args = parser.parse_args()
 
-    for input_path in args.input:
-        # Checking if the input is a directory
-        if os.path.isdir(input_path):
-            # If the output path is not specified, set it to the input directory
-            if args.output is None:
-                args.output = input_path
-            # If the output directory does not exist, create it
-            elif not os.path.isdir(args.output):
-                os.makedirs(args.output)
+    # Check if the input is a list of files
+    if len(args.input) > 1:
+        # If the output path is not specified, set it to the input directory
+        if args.output is None:
+            args.output = os.path.dirname(os.path.abspath(args.input[0]))
+        # If the output directory does not exist, create it
+        elif not os.path.isdir(args.output):
+            os.makedirs(args.output)
 
-            # Adding user confirmation for potential file overwriting
-            if os.path.normpath(input_path) == os.path.normpath(args.output) and not args.yes:
-                confirm = input(colored('Warning: Your input and output files are the same. This may overwrite your file. Continue? [y/N]', 'yellow'))
-                if confirm.lower() != 'y':
-                    exit()
+        # Add user confirmation for potential file overwriting
+        if os.path.normpath(os.path.dirname(os.path.abspath(args.input[0]))) == os.path.normpath(args.output) and not args.yes:
+            confirm = input(colored('Warning: Your input and output directories are the same. This may overwrite your files. Continue? [y/N]', 'yellow'))
+            if confirm.lower() != 'y':
+                exit()
+        process_files(args.input, args.output, args.scale, args.compression, args.flip_tif, args.tif, args.mrc, args.jpg, args.n_cores, args.keep_basename)
 
-            process_directory(input_path, args.output, args.scale, args.compression, args.flip_tif, args.tif, args.mrc, args.jpg, args.n_cores, args.keep_basename)
-        else:
-            # If the output file is not specified, we create one with the same name as the input, but append "_PASR" before the extension
-            if args.output is None or len(args.input) > 1:
-                base_name, ext = os.path.splitext(input_path)
-                if args.keep_basename:
-                    args.output = f"{base_name}{ext}"
-                else:
-                    args.output = f"{base_name}_PASR_{args.scale}x{ext}"
+    # Check if the input is a directory
+    elif os.path.isdir(args.input[0]):
+        input_path = args.input[0]
+        # If the output path is not specified, set it to the input directory
+        if args.output is None:
+            args.output = input_path
+        # If the output directory does not exist, create it
+        elif not os.path.isdir(args.output):
+            os.makedirs(args.output)
 
-            # Overwriting file extension if necessary
-            if args.tif:
-                base_name, ext = os.path.splitext(args.output)
-                args.output = f"{base_name}.tif"
-            if args.mrc:
-                base_name, ext = os.path.splitext(args.output)
-                args.output = f"{base_name}.mrc"
-            if args.jpg:
-                base_name, ext = os.path.splitext(args.output)
-                args.output = f"{base_name}_JPG{args.jpg_quality}.jpg"
+        # Add user confirmation for potential file overwriting
+        if os.path.normpath(input_path) == os.path.normpath(args.output) and not args.yes:
+            confirm = input(colored('Warning: Your input and output directories are the same. This may overwrite your files. Continue? [y/N]', 'yellow'))
+            if confirm.lower() != 'y':
+                exit()
 
-            # Determine if the output should be flipped
-            if args.flip_tif is None:
-                args.flip_tif = input_path.lower().endswith(('.mrc', '.mrcs')) and args.output.lower().endswith(('.tif', '.tiff'))
+        file_list = glob.glob(os.path.join(input_path, "*"))
+        process_files(file_list, args.output, args.scale, args.compression, args.flip_tif, args.tif, args.mrc, args.jpg, args.n_cores, args.keep_basename)
+    
+    # Check if the input is one file
+    elif len(args.input) == 1:
+        input_path = args.input[0]
+        # If the output file is not specified, we create one with the same name as the input, but append "_PASR" before the extension
+        if args.output is None:
+            base_name, ext = os.path.splitext(input_path)
+            if args.keep_basename:
+                args.output = f"{base_name}{ext}"
+            else:
+                args.output = f"{base_name}_PASR_{args.scale}x{ext}"
 
-            # Adding user confirmation for potential file overwriting
-            if os.path.exists(args.output) and not args.yes:
-                confirm = input(colored('Warning: Your output file already exists. This will overwrite your file. Continue? [y/N]', 'yellow'))
-                if confirm.lower() != 'y':
-                    print(colored(f'Skipping file {input_path}', 'yellow'))
-                    continue
-            if args.jpg:
-                args.output = f"{base_name}.jpg" # The previous change was just for comparison. This reverts back, then it's changed again in the process_file function.
+        # Overwrite file extension if necessary
+        if args.tif:
+            base_name, ext = os.path.splitext(args.output)
+            args.output = f"{base_name}.tif"
+        if args.mrc:
+            base_name, ext = os.path.splitext(args.output)
+            args.output = f"{base_name}.mrc"
+        if args.jpg:
+            base_name, ext = os.path.splitext(args.output)
+            args.output = f"{base_name}_JPG{args.jpg_quality}.jpg"
 
-            process_file(input_path, args.output, args.scale, args.compression, args.flip_tif)
+        # Determine if the output should be flipped
+        if args.flip_tif is None:
+            args.flip_tif = input_path.lower().endswith(('.mrc', '.mrcs')) and args.output.lower().endswith(('.tif', '.tiff'))
 
+        # Add user confirmation for potential file overwriting
+        if os.path.exists(args.output) and not args.yes:
+            confirm = input(colored('Warning: Your output file already exists. This will overwrite your file. Continue? [y/N]', 'yellow'))
+            if confirm.lower() != 'y':
+                print(colored(f'Skipping file {input_path}', 'yellow'))
+                exit()
+        if args.jpg:
+            args.output = f"{base_name}.jpg" # The previous change was just for comparison. This reverts back, then it's changed again in the process_file function.
+
+        process_file(input_path, args.output, args.scale, args.compression, args.flip_tif)
