@@ -73,6 +73,12 @@ This is just an example. Adjust the command to suit your needs!
 
 For more details about the PASR algorithm and its applications, see the associated manuscript by Burton-Smith & Murata, 2023: [https://doi.org/10.1101/2023.06.09.544325](https://doi.org/10.1101/2023.06.09.544325)
 
+## Issues and Support
+
+If you encounter any problems or have any questions about the script, please submit an issue to the Issues tab on this GitHub repository.
+
+[Submit an Issue](https://github.com/alexjnoble/PASR_python/issues)
+
 ## Author
 
 This script was written by Alex J. Noble with assistance from OpenAI's GPT-4 model, June-August 2023.
