@@ -1,6 +1,6 @@
 # PASR Pre-Processing Script
 
-This script applies the PASR (Post-Acquisition Super Resolution) algorithm to 2D images or image stacks. The script is designed to handle files in MRC, TIF, TIFF, and JPG formats, and can process individual files or a directory of files. The PASR algorithm is a type of image pre-processing that scales images by duplicating each pixel a specified number of times. The result is that cryoEM/cryoET particle alignments that reach Nyquist resolution before PASR mayreach a beyond-Nyquist resolution after PASR. This is possible due to super-sampling and sub-pixel cross-correlation accuracy during frame alignment and/or particle alignment steps.
+This script applies the PASR (Post-Acquisition Super Resolution) algorithm to 2D images or image stacks. The script is designed to handle files in MRC, TIF, TIFF, and JPG formats, and can process individual files, a directory of files, or a list of files. The PASR algorithm is a type of image pre-processing that scales images by duplicating each pixel a specified number of times. The result is that cryoEM/cryoET particle alignments that reach Nyquist resolution before PASR mayreach a beyond-Nyquist resolution after PASR. This is possible due to super-sampling and sub-pixel cross-correlation accuracy during frame alignment and/or particle alignment steps.
 
 ## Installation
 
@@ -21,7 +21,12 @@ To process a single file:
 
 To process a directory of files:
 ```bash
-./pasr.py images/ -o pasred/ --force_tif
+./pasr.py images/ -o PASRed/ --force_tif
+```
+
+To process all files in the current directory:
+```bash
+./pasr.py *
 ```
 
 ## Arguments
@@ -50,7 +55,7 @@ Recommended output formats are TIF (best lossless compression) or MRC. JPEG outp
 Here is an example command using several of the available options:
 
 ```bash
-./pasr.py images/ -o pasred/ -s 3 -c zlib -n 4 --force_tif
+./pasr.py images/ -o PASRed/ -s 3 -c zlib -n 4 --force_tif
 ```
 
 This command will do the following:
@@ -70,4 +75,4 @@ For more details about the PASR algorithm and its applications, see the associat
 
 ## Author
 
-This script was written by Alex J. Noble with assistance from OpenAI's GPT-4 model, June-July 2023.
+This script was written by Alex J. Noble with assistance from OpenAI's GPT-4 model, June-August 2023.
