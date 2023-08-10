@@ -150,14 +150,23 @@ def process_files(file_list, output_dir, scale, compression, flip_tif, force_tif
     arguments = []
     for input_file in file_list:
         base_name, ext = os.path.splitext(os.path.basename(input_file))
-        if keep_basename:
-            output_file = os.path.join(output_dir, f"{base_name}{ext}")
-        elif force_tif:
-            output_file = os.path.join(output_dir, f"{base_name}_PASR_{scale}x.tif")
+        if force_tif:
+            if keep_basename:
+                output_file = os.path.join(output_dir, f"{base_name}.tif")
+            else:
+                output_file = os.path.join(output_dir, f"{base_name}_PASR_{scale}x.tif")
         elif force_mrc:
-            output_file = os.path.join(output_dir, f"{base_name}_PASR_{scale}x.mrc")
+            if keep_basename:
+                output_file = os.path.join(output_dir, f"{base_name}.mrc")
+            else:
+                output_file = os.path.join(output_dir, f"{base_name}_PASR_{scale}x.mrc")
         elif force_jpg:
-            output_file = os.path.join(output_dir, f"{base_name}_PASR_{scale}x.jpg")
+            if keep_basename:
+                output_file = os.path.join(output_dir, f"{base_name}.jpg")
+            else:
+                output_file = os.path.join(output_dir, f"{base_name}_PASR_{scale}x.jpg")
+        elif keep_basename:
+            output_file = os.path.join(output_dir, f"{base_name}{ext}")
         else:
             output_file = os.path.join(output_dir, f"{base_name}_PASR_{scale}x{ext}")
         if flip_tif is None:
