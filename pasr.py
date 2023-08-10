@@ -271,7 +271,7 @@ def main():
         process_file(input_path, args.output, args.scale, args.compression, args.flip_tif, args.jpg_quality)
 
     end_time = time.time()
-    print(f"Total time taken to process {num_files} files: {end_time - start_time:.2f} seconds")
+    print(f"Total time taken to process {num_files} file(s): {end_time - start_time:.2f} seconds")
 
 if __name__ == "__main__":
     main()
