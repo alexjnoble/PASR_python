@@ -6,7 +6,8 @@
 # This script applies the PASR algorithm to 2D images or image stacks.
 # Requirement: pip install mrcfile tifffile imagecodecs termcolor pillow
 # Usage, single-file PASR: ./pasr.py input.mrc
-# Usage, PASRing a folder of mrc files to tif: ./pasr.py images/ -o pasred/ --force_tif
+# Usage, PASRing a folder of mrc files to tif: ./pasr.py images/ -o PASRed/ --force_tif
+# Usage, PASRing all tif files in the current folder to JPG100: ./pasr.py *tif -j -q 100
 
 import os
 import glob
