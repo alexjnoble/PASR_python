@@ -11,10 +11,11 @@
 
 import os
 import glob
-import imageio.v2 as imageio
+import time
 import mrcfile
 import argparse
 import numpy as np
+import imageio.v2 as imageio
 from PIL import Image
 from termcolor import colored
 from tifffile import imread, imwrite, TiffFile
@@ -166,8 +167,11 @@ def process_files(file_list, output_dir, scale, compression, flip_tif, force_tif
     # Using a multiprocessing pool to process all files in parallel
     with Pool(n_cores) as p:
         p.starmap(process_file, arguments)
+    
+    return num_files
 
-if __name__ == "__main__":
+def main():
+    start_time = time.time()
     # Parsing command line arguments
     parser = argparse.ArgumentParser(description="PASR Pre-process MRC and TIF frame stacks and MRC, TIF, and JPG images.")
     parser.add_argument("input", type=str, nargs="+", help="Input MRC, MRCS, TIF, TIFF, or JPG file, or directory containing such files, or a list of such files.")
@@ -198,7 +202,7 @@ if __name__ == "__main__":
             confirm = input(colored(f'Warning: Your input and output directories are the same ({args.output}). This may overwrite your files. Continue? [y/N]', 'yellow'))
             if confirm.lower() != 'y':
                 exit()
-        process_files(args.input, args.output, args.scale, args.compression, args.flip_tif, args.tif, args.mrc, args.jpg, args.n_cores, args.keep_basename, args.jpg_quality)
+        num_files = process_files(args.input, args.output, args.scale, args.compression, args.flip_tif, args.tif, args.mrc, args.jpg, args.n_cores, args.keep_basename, args.jpg_quality)
 
     # Check if the input is a directory
     elif os.path.isdir(args.input[0]):
@@ -217,11 +221,12 @@ if __name__ == "__main__":
                 exit()
 
         file_list = glob.glob(os.path.join(input_path, "*"))
-        process_files(file_list, args.output, args.scale, args.compression, args.flip_tif, args.tif, args.mrc, args.jpg, args.n_cores, args.keep_basename, args.jpg_quality)
+        num_files = process_files(file_list, args.output, args.scale, args.compression, args.flip_tif, args.tif, args.mrc, args.jpg, args.n_cores, args.keep_basename, args.jpg_quality)
     
     # Check if the input is one file
     elif len(args.input) == 1:
         input_path = args.input[0]
+        num_files = 1
         # If the output file is not specified, we create one with the same name as the input, but append "_PASR" before the extension
         if args.output is None:
             base_name, ext = os.path.splitext(input_path)
@@ -255,3 +260,9 @@ if __name__ == "__main__":
             args.output = f"{base_name}.jpg" # The previous change was just for comparison. This reverts back, then it's changed again in the process_file function.
 
         process_file(input_path, args.output, args.scale, args.compression, args.flip_tif, args.jpg_quality)
+
+    end_time = time.time()
+    print(f"Total time taken to process {num_files} files: {end_time - start_time:.2f} seconds")
+
+if __name__ == "__main__":
+    main()
