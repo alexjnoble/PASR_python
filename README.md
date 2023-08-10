@@ -61,7 +61,7 @@ Here is an example command using several of the available options:
 This command will do the following:
 
 - `images/`: Process all files in the `images/` directory.
-- `-o pasred/`: Write the processed files to the `pasred/` directory.
+- `-o PASRed/`: Write the processed files to the `PASRed/` directory.
 - `-s 3`: Use a scale factor of 3, meaning each pixel in the original images will be replaced with a 3x3 grid of pixels in the processed images. Note: Only do this if you have already reached Nyquist for -s 2.
 - `-c zlib`: Use zlib compression for TIF output.
 - `-n 4`: Use 4 CPU cores for parallel processing.
