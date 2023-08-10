@@ -190,12 +190,17 @@ def main():
     parser.add_argument("-q", "--jpg_quality", type=int, default=95, choices=range(1, 101), help="Quality for JPG output, from 1 (worst) to 100 (best). Note: values above 95 may not increase quality much, but will increase file size substantially. Default is 95.")
     parser.add_argument("-n", "--n_cores", type=int, default=os.cpu_count(), help="Number of CPU cores to use for parallel processing.")
     parser.add_argument("-k", "--keep_basename", action="store_true", help="Keep the original basename for the output file(s); do not append _PASR_{scale}x.")
-    parser.add_argument("-f", "--flip_tif", default=None, action='store_true', help="Option to flip TIF output across the x-axis. Default is True for MRC/MRCS input and TIF/TIFF output, False otherwise, unless specified.")
+    parser.add_argument("-f", "--flip_tif", type=lambda x: (str(x).lower() in ['true','1', 'yes']), nargs='?', const=True, default=None, help="Option to flip TIF output across the x-axis. Specify --flip_tif=True to enable, --flip_tif=False to disable. Default is True for MRC/MRCS input and TIF/TIFF output, False otherwise, unless specified.")
     parser.add_argument("-t", "--tif", "--force_tif", action="store_true", help="Force the output file extension to be .tif. This is useful because .tif output uses ZLIB or LZW compression.")
     parser.add_argument("-m", "--mrc", "--force_mrc", action="store_true", help="Force the output file extension to be .mrc. This exists just for completion.")
     parser.add_argument("-j", "--jpg", "--force_jpg", action="store_true", help="Force the output file extension to be .jpg for 2D images. This exists just for fun.")
     parser.add_argument("-y", "--yes", action="store_true", help="Automatically answer 'y' to any user input questions.")
     args = parser.parse_args()
+
+    # Check that a maximum of one 'force' option is used
+    if sum([args.tif, args.mrc, args.jpg]) > 1:
+        print(colored("Error: Only one of the 'force' options (--force_tif, --force_mrc, --force_jpg) can be used at a time.", 'red'))
+        exit()
 
     # Check if the input is a list of files
     if len(args.input) > 1:

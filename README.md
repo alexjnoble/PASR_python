@@ -42,7 +42,7 @@ To process all files in the current directory:
 - `-t`, `--tif`, `--force_tif`: Force the output file extension to be .tif. This is useful because .tif output uses ZLIB or LZW compression.
 - `-m`, `--mrc`, `--force_mrc`: Force the output file extension to be .mrc. This exists just for completion.
 - `-j`, `--jpg`, `--force_jpg`: Force the output file extension to be .jpg for 2D images. This exists just for fun.
-- `-y`, `--yes`: Automatically answer 'y' to any user input questions, such as overwriting warnings.
+- `-y`, `--yes`: Automatically answer 'y' to any user input questions.
 
 ## Details
 
