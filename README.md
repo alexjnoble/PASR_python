@@ -26,17 +26,18 @@ To process a directory of files:
 
 ## Arguments
 
-- `input`: The path to the input file or directory.
-- `-s`, `--scale`: The scale factor (i.e., the number of times to duplicate each pixel). Default is 2.
+- `input`: The path to the input file(s) or directory, or a list of files.
+- `-s`, `--scale`: The scaling factor (i.e., the number of times to duplicate each pixel). Choices are from 2 to 5. Default is 2.
 - `-o`, `--output`: The path to the output file or directory. If not provided and the input is a directory, the input directory is used.
 - `-c`, `--compression`: The compression algorithm to use for TIF output. Choices are 'zlib' and 'lzw'. Default is 'lzw'.
-- `-q`, `--jpg_quality`: The quality for JPG output, from 1 (worst) to 100 (best). Note: values above 95 may not increase quality much, but will increase file size substantially. Default is 95.
+- `-q`, `--jpg_quality`: The quality for JPG output, from 1 (worst) to 100 (best). Note: values above 95 may not increase quality much but will increase file size substantially. Default is 95.
 - `-n`, `--n_cores`: The number of CPU cores to use for parallel processing. Default is the number of cores available on the system.
 - `-k`, `--keep_basename`: Keep the original basename for the output file(s); do not append `_PASR_{scale}x`.
-- `--flip_tif`: Flip TIF output across the x-axis. Default is True for MRC/MRCS input and TIF/TIFF output, False otherwise, unless specified.
-- `--force_tif`: Force the output file extension to be .tif. This is useful because .tif output uses ZLIB or LZW compression.
-- `--force_mrc`: Force the output file extension to be .mrc.
-- `--force_jpg`: Force the output file extension to be .jpg for 2D images.
+- `-f`, `--flip_tif`: Option to flip TIF output across the x-axis. Default is True for MRC/MRCS input and TIF/TIFF output, False otherwise, unless specified.
+- `-t`, `--tif`, `--force_tif`: Force the output file extension to be .tif. This is useful because .tif output uses ZLIB or LZW compression.
+- `-m`, `--mrc`, `--force_mrc`: Force the output file extension to be .mrc. This exists just for completion.
+- `-j`, `--jpg`, `--force_jpg`: Force the output file extension to be .jpg for 2D images. This exists just for fun.
+- `-y`, `--yes`: Automatically answer 'y' to any user input questions, such as overwriting warnings.
 
 ## Details
 
