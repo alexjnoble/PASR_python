@@ -1,6 +1,6 @@
 # PASR Pre-Processing Script
 
-This script applies the PASR (Post-Acquisition Super Resolution) algorithm to 2D images or image stacks. The script is designed to handle files in MRC, TIF, TIFF, and JPG formats, and can process individual files, a directory of files, or a list of files. The PASR algorithm is a type of image pre-processing that scales images by duplicating each pixel a specified number of times. The result is that cryoEM/cryoET particle alignments that reach Nyquist resolution before PASR mayreach a beyond-Nyquist resolution after PASR. This is possible due to super-sampling and sub-pixel cross-correlation accuracy during frame alignment and/or particle alignment steps.
+This script applies the PASR (Post-Acquisition Super Resolution) algorithm to 2D images or image stacks. The script is designed to handle files in MRC, TIF, TIFF, and JPG formats, and can process individual files, a directory of files, or a list of files. The PASR algorithm is a type of image pre-processing that scales images by duplicating each pixel a specified number of times. The result is that cryoEM/cryoET particle alignments that reach Nyquist resolution before PASR may reach a beyond-Nyquist resolution after PASR. This is possible due to super-sampling and sub-pixel cross-correlation accuracy during frame alignment and/or particle alignment steps.
 
 ## Installation
 
