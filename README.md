@@ -26,7 +26,7 @@ To process a directory of files:
 
 To process all files in the current directory:
 ```bash
-./pasr.py $\times$
+./pasr.py `` &#42; ``
 ```
 
 ## Arguments
