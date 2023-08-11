@@ -81,4 +81,4 @@ If you encounter any problems or have any questions about the script, please sub
 
 ## Author
 
-This script was written by Alex J. Noble with assistance from OpenAI's GPT-4 model, June-August 2023.
+This script was written by Alex J. Noble with assistance from OpenAI's GPT-4 model, June-August 2023 at SEMC.
