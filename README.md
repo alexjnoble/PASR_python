@@ -7,7 +7,7 @@ This script applies the PASR (Post-Acquisition Super Resolution) algorithm to 2D
 This script requires Python 3 and several Python libraries. These libraries can be installed via pip:
 
 ```bash
-pip install mrcfile tifffile imagecodecs termcolor pillow
+pip install imagecodecs imageio mrcfile pillow termcolor tifffile
 ```
 
 ## Usage
