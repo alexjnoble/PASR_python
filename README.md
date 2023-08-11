@@ -71,15 +71,11 @@ This is just an example. Adjust the command to suit your needs!
 
 ## Issues and Support
 
-If you encounter any problems or have any questions about the script, please submit an issue to the Issues tab on this GitHub repository.
-
-[Submit an Issue](https://github.com/alexjnoble/PASR_python/issues)
+If you encounter any problems or have any questions about the script, please [Submit an Issue](https://github.com/alexjnoble/PASR_python/issues).
 
 ## Contributions
 
-Contributions are welcome! Please open a pull request or issue.
-
-[Submit a Pull Request](https://github.com/alexjnoble/PASR_python/pulls)
+Contributions are welcome! Please open a [Pull Request](https://github.com/alexjnoble/PASR_python/pulls) or [Issue](https://github.com/alexjnoble/PASR_python/issues).
 
 ## Reference
 
