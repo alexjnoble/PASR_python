@@ -79,6 +79,16 @@ If you encounter any problems or have any questions about the script, please sub
 
 [Submit an Issue](https://github.com/alexjnoble/PASR_python/issues)
 
+## Contributions
+
+Contributions are welcome! Please open a pull request or issue.
+
+[Submit a Pull Request](https://github.com/alexjnoble/PASR_python/pulls)
+
 ## Author
 
 This script was written by Alex J. Noble with assistance from OpenAI's GPT-4 model, June-August 2023 at SEMC.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
