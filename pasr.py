@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #
-# Author: Alex J. Noble with help from GPT4, June-August 2023 @SEMC
+# Author: Alex J. Noble with help from GPT4, June-August 2023 @SEMC, under the MIT License
 # Associated manuscript: https://doi.org/10.1101/2023.06.09.544325
 #
 # This script applies the PASR algorithm to 2D images or image stacks.
