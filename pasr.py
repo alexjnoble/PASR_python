@@ -8,6 +8,7 @@
 # Usage, single-file PASR: ./pasr.py input.mrc
 # Usage, PASRing a folder of mrc files to tif: ./pasr.py images/ -o PASRed/ --force_tif
 # Usage, PASRing all tif files in the current folder to JPG100: ./pasr.py *tif -j -q 100
+__version__ = "1.0.0"
 
 import os
 import glob
@@ -195,6 +196,7 @@ def main():
     parser.add_argument("-m", "--mrc", "--force_mrc", action="store_true", help="Force the output file extension to be .mrc. This exists just for completion.")
     parser.add_argument("-j", "--jpg", "--force_jpg", action="store_true", help="Force the output file extension to be .jpg for 2D images. This exists just for fun.")
     parser.add_argument("-y", "--yes", action="store_true", help="Automatically answer 'y' to any user input questions.")
+    parser.add_argument("-v", "--version", action="version", version=f"PASR v{__version__}")
     args = parser.parse_args()
 
     # Check that a maximum of one 'force' option is used
