@@ -54,6 +54,7 @@ To process all files in the current directory:
 - `-m`, `--mrc`, `--force_mrc`: Force the output file extension to be .mrc. This exists just for completion.
 - `-j`, `--jpg`, `--force_jpg`: Force the output file extension to be .jpg for 2D images. This exists just for fun.
 - `-y`, `--yes`: Automatically answer 'y' to any user input questions.
+- `-v`, `--version`: Display the version of the PASR script.
 
 ## Details
 
@@ -61,9 +62,21 @@ The script is parallelized for efficiency when processing multiple files using a
 
 Recommended output formats are TIF (best lossless compression) or MRC. JPEG output is also an option for fun development and archival purposes.
 
-## Example with Options
+## Examples with Options
 
-Here is an example command using several of the available options:
+### Example #1: Process all tif files and output as jpg
+
+```bash
+./pasr.py *tif -j -q 100
+```
+
+This command will do the following:
+
+- `*tif`: Process all TIF files in the current directory.
+- `-j`: Output files in JPG format (.
+- `-q 100`: Set the quality of JPG output to 100, for the best image quality.
+
+### Example #2: Using several options
 
 ```bash
 ./pasr.py images/ -o PASRed/ -s 3 -c zlib -n 4 --force_tif
@@ -78,7 +91,7 @@ This command will do the following:
 - `-n 4`: Use 4 CPU cores for parallel processing.
 - `--force_tif`: Save all output files as .tif, regardless of the input file format.
 
-This is just an example. Adjust the command to suit your needs!
+These are just examples. Adjust the commands to suit your needs!
 
 ## Issues and Support
 
@@ -94,7 +107,7 @@ For more details about the PASR algorithm and its applications, see the associat
 
 ## Author
 
-This script was written by Alex J. Noble with assistance from OpenAI's GPT-4 model, June-August 2023 at SEMC.
+This script was written by Alex J. Noble with assistance from OpenAI's GPT-4 model, 2023-2024 at SEMC.
 
 ## License
 
