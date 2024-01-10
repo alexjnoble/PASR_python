@@ -73,7 +73,7 @@ Recommended output formats are TIF (best lossless compression) or MRC. JPEG outp
 This command will do the following:
 
 - `*tif`: Process all TIF files in the current directory.
-- `-j`: Output files in JPG format (.
+- `-j`: Output files in JPG format (in the current directory since -o is not specified).
 - `-q 100`: Set the quality of JPG output to 100, for the best image quality.
 
 ### Example #2: Using several options
