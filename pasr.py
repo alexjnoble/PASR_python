@@ -13,42 +13,54 @@ __version__ = "1.0.0"
 import os
 import glob
 import time
-import mrcfile
 import argparse
+
+import mrcfile
 import numpy as np
 import imageio.v2 as imageio
 from PIL import Image
 from termcolor import colored
 from tifffile import imread, imwrite, TiffFile
 from multiprocessing import Pool
+
 Image.MAX_IMAGE_PIXELS = None
 
 # Function to scale image
 def scale_image(image, scale):
     """Scales an image by duplicating each pixel.
-
+    
     Args:
-    image : numpy array representing the image
-    scale : int, scale factor
-
+        image: 
+            numpy array representing the image
+        scale: 
+            int, scale factor
+    
     Returns:
-    numpy array, the scaled image
+        numpy array: 
+            the scaled image
     """
     return np.repeat(np.repeat(image, scale, axis=1), scale, axis=0)
 
 # Function to process each file
 def process_file(input_file, output_file, scale, compression, flip_tif, jpg_quality):
     """Processes a file: reads, scales and writes it.
-
+    
     Args:
-    input_file : str, path to the input file
-    output_file : str, path to the output file
-    scale : int, scale factor
-    compression : str, compression method
-    flip_tif : bool, whether to flip the image
-
+        input_file:
+            str, path to the input file
+        output_file:
+            str, path to the output file
+        scale:
+            int, scale factor
+        compression: 
+            str, compression method
+        flip_tif:
+            bool, whether to flip the image
+        jpg_quality:
+            int, quality for JPG output
+    
     Returns:
-    None
+        None
     """
     try:
         # Check if output is JPG and read header to check dimensions
@@ -113,22 +125,32 @@ def process_file(input_file, output_file, scale, compression, flip_tif, jpg_qual
 
 # Function to process a directory
 def process_files(file_list, output_dir, scale, compression, flip_tif, force_tif, force_mrc, force_jpg, n_cores, keep_basename, jpg_quality):
-    """Processes a directory: lists all files and processes each of them.
-
+    """Processes a directory by scaling all files in parallel.
+    
     Args:
-    input_dir : str, path to the input directory
-    output_dir : str, path to the output directory
-    scale : int, scale factor
-    compression : str, compression method
-    flip_tif : bool, whether to flip the image
-    force_tif : bool, whether to force TIF output
-    force_mrc : bool, whether to force MRC output
-    force_jpg : bool, whether to force JPG output
-    n_cores : int, number of CPU cores to use
-    keep_basename : bool, whether to keep the original file basename
-
+        file_list:
+            str[], list of file paths
+        output_dir: 
+            str, path to the output directory
+        scale:
+            int, scale factor
+        compression:
+            str, compression algorithm
+        flip_tif:
+            bool, whether to flip tif images  
+        force_tif:
+            bool, whether to force .tif output
+        force_mrc:
+            bool, whether to force .mrc output
+        force_jpg:
+            bool, whether to force .jpg output
+        n_cores:
+            int, number of CPU cores to use
+        keep_basename:
+            bool, keep original basenames
+    
     Returns:
-    None
+        int: number of files processed
     """
     # Filter files by supported extensions
     supported_extensions = ['.mrc', '.mrcs', '.tif', '.tiff', '.jpg', '.jpeg']
