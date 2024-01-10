@@ -3,11 +3,19 @@
 # Author: Alex J. Noble with help from GPT4, June-August 2023 @SEMC, under the MIT License
 # Associated manuscript: https://doi.org/10.1101/2023.06.09.544325
 #
-# This script applies the PASR algorithm to 2D images or image stacks.
-# Dependencies: pip install imagecodecs imageio mrcfile pillow termcolor tifffile
-# Usage, single-file PASR: ./pasr.py input.mrc
-# Usage, PASRing a folder of mrc files to tif: ./pasr.py images/ -o PASRed/ --force_tif
-# Usage, PASRing all tif files in the current folder to JPG100: ./pasr.py *tif -j -q 100
+# PASR Pre-Processing Script
+# ---------------------------
+# This script applies the Post-Acquisition Super Resolution (PASR) algorithm to 2D images or
+# image stacks. Use only if your cryoEM/ET particle alignments have reached Nyquist resolution.
+#
+# Dependencies: Requires Python 3 and several Python libraries, which can be installed with pip:
+# pip install imagecodecs imageio mrcfile pillow termcolor tifffile
+#
+# Usage examples:
+# Single-file PASR (will output to the current directory): ./pasr.py input.mrc
+# Single-directory PASR (will output to the images/ directory): ./pasr.py images/
+# PASRing a folder of mrc files to tif: ./pasr.py images/ -o PASRed/ --force_tif
+# PASRing all tif files in the current folder to JPG100: ./pasr.py *tif -j -q 100
 __version__ = "1.0.0"
 
 import os
